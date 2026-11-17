@@ -1,0 +1,12 @@
+graph TD
+  A[Log Ingestor\nCSV / JSON / Mock API] --> B[Event Parser\nparser.py]
+  B --> C[Window Policy Engine\npolicy.py]
+  C --> D{Dentro de ventana?}
+  D -- Sí --> E[Event Store\nSQLite]
+  D -- No --> F[Anomaly Detector\ndetector.py]
+  F --> E
+  F --> G[Alert Engine\nalerter.py]
+  G --> H[CLI Report\nRich Table]
+  G --> I[REST API\nFastAPI /alerts]
+  E --> J[Dashboard\n/api/v1/stats]
+  C --> K[Policy Loader\npolicies.yaml]

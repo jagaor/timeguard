@@ -1,0 +1,55 @@
+# TimeGuard — Políticas de acceso de ejemplo
+# Formato: lista de políticas evaluadas por src/policy.py
+# Orden de resolución: coincidencia exacta de cuenta > coincidencia glob > política catch-all
+# allowed_days usa nombres cortos en inglés (Mon, Tue, Wed, Thu, Fri, Sat, Sun)
+# allowed_hours en formato HH:MM (24h) y en la zona horaria indicada en 'timezone'
+# risk_level: LOW | MEDIUM | HIGH | CRITICAL
+
+policies:
+  - account_pattern: "svc_backup*"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri]
+    allowed_hours_start: "06:00"
+    allowed_hours_end: "22:00"
+    timezone: "Europe/Madrid"
+    risk_level: MEDIUM
+    description: "Cuentas de servicio de backup. Ventana ampliada en días laborables para cubrir ventanas nocturnas de copia."
+
+  - account_pattern: "adm_deploy"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri]
+    allowed_hours_start: "08:00"
+    allowed_hours_end: "20:00"
+    timezone: "Europe/Madrid"
+    risk_level: HIGH
+    description: "Cuenta de despliegue en producción. Cualquier operación fuera de horario laboral debe revisarse."
+
+  - account_pattern: "svc_db*"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri]
+    allowed_hours_start: "00:00"
+    allowed_hours_end: "23:59"
+    timezone: "Europe/Madrid"
+    risk_level: LOW
+    description: "Cuentas de administración de base de datos. Política permisiva de ejemplo: actividad continua esperada."
+
+  - account_pattern: "adm_infra"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+    allowed_hours_start: "07:00"
+    allowed_hours_end: "23:00"
+    timezone: "Europe/Madrid"
+    risk_level: HIGH
+    description: "Administrador de infraestructura. Cobertura de guardias todos los días pero sin acceso en horario nocturno profundo."
+
+  - account_pattern: "svc_sched*"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+    allowed_hours_start: "00:00"
+    allowed_hours_end: "23:59"
+    timezone: "Europe/Madrid"
+    risk_level: LOW
+    description: "Cuentas del planificador de tareas. Operan 24x7 por diseño; solo se alerta de anomalías de origen."
+
+  - account_pattern: "adm_*"
+    allowed_days: [Mon, Tue, Wed, Thu, Fri]
+    allowed_hours_start: "07:00"
+    allowed_hours_end: "21:00"
+    timezone: "Europe/Madrid"
+    risk_level: CRITICAL
+    description: "Política catch-all para cuentas administrativas sin regla específica. Mayor severidad por defecto."
